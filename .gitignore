@@ -27,10 +27,13 @@ terraform/
 data/
 **/**/logs
 
+#txt
+temp.txt
 
 #yaml
 variables.yaml
 values.yaml
+override-values.yaml
 
 #csv
 data_pgadmin

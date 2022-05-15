@@ -486,13 +486,14 @@ workers:
     #   cpu: 100m
     #   memory: 128Mi
 
-  resources: {}
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  resources: 
+  # {}
+   limits:
+    cpu: 100m
+    memory: 2Gi
+   requests:
+    cpu: 100m
+    memory: 51Mi
 
   # Grace period for tasks to finish after SIGTERM is sent from kubernetes
   terminationGracePeriodSeconds: 600
@@ -1543,20 +1544,20 @@ dags:
     ## the name of an existing PVC to use
     existingClaim:
   gitSync:
-    enabled: true 
+    enabled: true
+
     # git repo clone url
     # ssh examples ssh://git@github.com/apache/airflow.git
     # git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
-    repo: ssh://git@github.com:rafzul/airflow_dags.git
+    repo: ssh://git@github.com/rafzul/airflow_dags.git
     branch: main
     rev: HEAD
-    depth: 1
     # the number of consecutive failures allowed before aborting
-    maxFailures: 0
+    maxFailures: 2
     # subpath within the repo where dags are located
     # should be "" if dags are at repo root
-    subPath: "/nytaxi_dags"
+    subPath: ""
     # if your repo needs a user name password
     # you can load them to a k8s secret like the one below
     #   ---
@@ -1587,7 +1588,7 @@ dags:
     #
     # If you are using an ssh private key, you can additionally
     # specify the content of your known_hosts file, example:
-    #
+    # knownHosts: ""
     # knownHosts: |
     #    <host1>,<ip1> <key1>
     #    <host2>,<ip2> <key2>
@@ -1614,11 +1615,11 @@ dags:
 logs:
   persistence:
     # Enable persistent volume for storing logs
-    enabled: true
+    enabled: false
     # Volume size for logs
-    size: 100Mi
+    size: 100Gi
     # If using a custom storageClass, pass name here
     storageClassName:
     ## the name of an existing PVC to use
-    existingClaim: airflow-logs-pvc
+    existingClaim:
 

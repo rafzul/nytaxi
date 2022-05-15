@@ -1,0 +1,6 @@
+kind: Deployment
+spec:
+  template:
+    metadata:
+      annotations:
+        timestamp: "{{ .Values.timestamp }}"

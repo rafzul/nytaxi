@@ -1,0 +1,1745 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "meta.helm.sh/release-name": "airflow",
+                    "meta.helm.sh/release-namespace": "airflow"
+                },
+                "creationTimestamp": "2022-05-15T02:00:33Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "chart": "airflow-1.5.0",
+                    "component": "statsd",
+                    "heritage": "Helm",
+                    "release": "airflow",
+                    "tier": "airflow"
+                },
+                "name": "airflow-statsd",
+                "namespace": "airflow",
+                "resourceVersion": "7970",
+                "uid": "515a7ad6-ad9b-42e6-a473-14774842f26d"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "component": "statsd",
+                        "release": "airflow",
+                        "tier": "airflow"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%"
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "component": "statsd",
+                            "release": "airflow",
+                            "tier": "airflow"
+                        }
+                    },
+                    "spec": {
+                        "affinity": {},
+                        "containers": [
+                            {
+                                "args": [
+                                    "--statsd.mapping-config=/etc/statsd-exporter/mappings.yml"
+                                ],
+                                "image": "apache/airflow:airflow-statsd-exporter-2021.04.28-v0.17.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/metrics",
+                                        "port": 9102,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 5
+                                },
+                                "name": "statsd",
+                                "ports": [
+                                    {
+                                        "containerPort": 9125,
+                                        "name": "statsd-ingest",
+                                        "protocol": "UDP"
+                                    },
+                                    {
+                                        "containerPort": 9102,
+                                        "name": "statsd-scrape",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/metrics",
+                                        "port": 9102,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "runAsUser": 65534
+                        },
+                        "serviceAccount": "airflow-statsd",
+                        "serviceAccountName": "airflow-statsd",
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-05-15T02:00:33Z",
+                        "lastUpdateTime": "2022-05-15T02:01:03Z",
+                        "message": "ReplicaSet \"airflow-statsd-7586f9998\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2022-05-15T02:07:56Z",
+                        "lastUpdateTime": "2022-05-15T02:07:56Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "6",
+                    "meta.helm.sh/release-name": "airflow",
+                    "meta.helm.sh/release-namespace": "airflow"
+                },
+                "creationTimestamp": "2022-05-15T02:00:33Z",
+                "generation": 6,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "chart": "airflow-1.5.0",
+                    "component": "flower",
+                    "heritage": "Helm",
+                    "release": "airflow",
+                    "tier": "airflow"
+                },
+                "name": "airflow-flower",
+                "namespace": "airflow",
+                "resourceVersion": "15240",
+                "uid": "41890689-af12-47ba-a16d-9d10285b5249"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "component": "flower",
+                        "release": "airflow",
+                        "tier": "airflow"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%"
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/airflow-config": "0bd9ea832e44a40479a8204d74ba357bba823b3bb921b91f2abca91f3cbb0478",
+                            "checksum/flower-secret": "636da6aef52b0ab4a7d967a0eca8a89d7297308d564677a473605a5bab7e2d74"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "component": "flower",
+                            "release": "airflow",
+                            "tier": "airflow"
+                        }
+                    },
+                    "spec": {
+                        "affinity": {},
+                        "containers": [
+                            {
+                                "args": [
+                                    "bash",
+                                    "-c",
+                                    "exec \\\nairflow celery flower"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "curl",
+                                            "localhost:5555"
+                                        ]
+                                    },
+                                    "failureThreshold": 10,
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 5,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "name": "flower",
+                                "ports": [
+                                    {
+                                        "containerPort": 5555,
+                                        "name": "flower-ui",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "curl",
+                                            "localhost:5555"
+                                        ]
+                                    },
+                                    "failureThreshold": 10,
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 5,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 0,
+                            "runAsUser": 50000
+                        },
+                        "serviceAccount": "airflow-flower",
+                        "serviceAccountName": "airflow-flower",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "airflow-airflow-config"
+                                },
+                                "name": "config"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-05-15T02:08:49Z",
+                        "lastUpdateTime": "2022-05-15T02:08:49Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2022-05-15T02:00:33Z",
+                        "lastUpdateTime": "2022-05-15T05:00:32Z",
+                        "message": "ReplicaSet \"airflow-flower-7798c4d598\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 6,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "7",
+                    "meta.helm.sh/release-name": "airflow",
+                    "meta.helm.sh/release-namespace": "airflow"
+                },
+                "creationTimestamp": "2022-05-15T02:00:33Z",
+                "generation": 7,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "chart": "airflow-1.5.0",
+                    "component": "triggerer",
+                    "heritage": "Helm",
+                    "release": "airflow",
+                    "tier": "airflow"
+                },
+                "name": "airflow-triggerer",
+                "namespace": "airflow",
+                "resourceVersion": "15320",
+                "uid": "4d4172a1-2340-4eaa-944a-ce5e02d3988a"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "component": "triggerer",
+                        "release": "airflow",
+                        "tier": "airflow"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "100%",
+                        "maxUnavailable": "50%"
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/airflow-config": "0bd9ea832e44a40479a8204d74ba357bba823b3bb921b91f2abca91f3cbb0478",
+                            "checksum/extra-configmaps": "2e44e493035e2f6a255d08f8104087ff10d30aef6f63176f1b18f75f73295598",
+                            "checksum/extra-secrets": "bb91ef06ddc31c0c5a29973832163d8b0b597812a793ef911d33b622bc9d1655",
+                            "checksum/metadata-secret": "dcbb26b06a9d686bf5fedceff6d4024447053fded58a37271cdfef14f8c8c800",
+                            "checksum/pgbouncer-config-secret": "da52bd1edfe820f0ddfacdebb20a4cc6407d296ee45bcb500a6407e2261a5ba2",
+                            "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "component": "triggerer",
+                            "release": "airflow",
+                            "tier": "airflow"
+                        }
+                    },
+                    "spec": {
+                        "affinity": {
+                            "podAntiAffinity": {
+                                "preferredDuringSchedulingIgnoredDuringExecution": [
+                                    {
+                                        "podAffinityTerm": {
+                                            "labelSelector": {
+                                                "matchLabels": {
+                                                    "component": "triggerer"
+                                                }
+                                            },
+                                            "topologyKey": "kubernetes.io/hostname"
+                                        },
+                                        "weight": 100
+                                    }
+                                ]
+                            }
+                        },
+                        "containers": [
+                            {
+                                "args": [
+                                    "bash",
+                                    "-c",
+                                    "exec airflow triggerer"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "sh",
+                                            "-c",
+                                            "CONNECTION_CHECK_MAX_COUNT=0 exec /entrypoint python -Wignore -c \"\nimport os\nos.environ['AIRFLOW__CORE__LOGGING_LEVEL'] = 'ERROR'\nos.environ['AIRFLOW__LOGGING__LOGGING_LEVEL'] = 'ERROR'\n\nfrom airflow.jobs.triggerer_job import TriggererJob\nfrom airflow.utils.db import create_session\nfrom airflow.utils.net import get_hostname\nimport sys\n\nwith create_session() as session:\n    job = session.query(TriggererJob).filter_by(hostname=get_hostname()).order_by(\n        TriggererJob.latest_heartbeat.desc()).limit(1).first()\n\nsys.exit(0 if job.is_alive() else 1)\n\"        \n"
+                                        ]
+                                    },
+                                    "failureThreshold": 5,
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 60,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 20
+                                },
+                                "name": "triggerer",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/logs",
+                                        "name": "logs"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/config/airflow_local_settings.py",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow_local_settings.py"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/dags",
+                                        "name": "dags",
+                                        "readOnly": true
+                                    }
+                                ]
+                            },
+                            {
+                                "env": [
+                                    {
+                                        "name": "GIT_SSH_KEY_FILE",
+                                        "value": "/etc/git-secret/ssh"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_SSH",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_KNOWN_HOSTS",
+                                        "value": "false"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REV",
+                                        "value": "HEAD"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_BRANCH",
+                                        "value": "main"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REPO",
+                                        "value": "ssh://git@github.com/rafzul/airflow_dags.git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEPTH",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ROOT",
+                                        "value": "/git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEST",
+                                        "value": "repo"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ADD_USER",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_WAIT",
+                                        "value": "60"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_MAX_SYNC_FAILURES",
+                                        "value": "2"
+                                    }
+                                ],
+                                "image": "k8s.gcr.io/git-sync/git-sync:v3.4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "git-sync",
+                                "resources": {},
+                                "securityContext": {
+                                    "runAsUser": 65533
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/git",
+                                        "name": "dags"
+                                    },
+                                    {
+                                        "mountPath": "/etc/git-secret/ssh",
+                                        "name": "git-sync-ssh-key",
+                                        "readOnly": true,
+                                        "subPath": "gitSshKey"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "args": [
+                                    "airflow",
+                                    "db",
+                                    "check-migrations",
+                                    "--migration-wait-timeout=60"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-for-airflow-migrations",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    }
+                                ]
+                            },
+                            {
+                                "env": [
+                                    {
+                                        "name": "GIT_SSH_KEY_FILE",
+                                        "value": "/etc/git-secret/ssh"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_SSH",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_KNOWN_HOSTS",
+                                        "value": "false"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REV",
+                                        "value": "HEAD"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_BRANCH",
+                                        "value": "main"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REPO",
+                                        "value": "ssh://git@github.com/rafzul/airflow_dags.git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEPTH",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ROOT",
+                                        "value": "/git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEST",
+                                        "value": "repo"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ADD_USER",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_WAIT",
+                                        "value": "60"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_MAX_SYNC_FAILURES",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ONE_TIME",
+                                        "value": "true"
+                                    }
+                                ],
+                                "image": "k8s.gcr.io/git-sync/git-sync:v3.4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "git-sync-init",
+                                "resources": {},
+                                "securityContext": {
+                                    "runAsUser": 65533
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/git",
+                                        "name": "dags"
+                                    },
+                                    {
+                                        "mountPath": "/etc/git-secret/ssh",
+                                        "name": "git-sync-ssh-key",
+                                        "readOnly": true,
+                                        "subPath": "gitSshKey"
+                                    }
+                                ]
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 0,
+                            "runAsUser": 50000
+                        },
+                        "serviceAccount": "airflow-triggerer",
+                        "serviceAccountName": "airflow-triggerer",
+                        "terminationGracePeriodSeconds": 60,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "airflow-airflow-config"
+                                },
+                                "name": "config"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "dags"
+                            },
+                            {
+                                "name": "git-sync-ssh-key",
+                                "secret": {
+                                    "defaultMode": 288,
+                                    "secretName": "airflow-ssh-git-secret"
+                                }
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "logs"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-05-15T02:08:56Z",
+                        "lastUpdateTime": "2022-05-15T02:08:56Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2022-05-15T02:00:33Z",
+                        "lastUpdateTime": "2022-05-15T05:00:51Z",
+                        "message": "ReplicaSet \"airflow-triggerer-5548c9b7dc\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 7,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "7",
+                    "meta.helm.sh/release-name": "airflow",
+                    "meta.helm.sh/release-namespace": "airflow"
+                },
+                "creationTimestamp": "2022-05-15T02:00:33Z",
+                "generation": 7,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "chart": "airflow-1.5.0",
+                    "component": "scheduler",
+                    "heritage": "Helm",
+                    "release": "airflow",
+                    "tier": "airflow"
+                },
+                "name": "airflow-scheduler",
+                "namespace": "airflow",
+                "resourceVersion": "15336",
+                "uid": "6bc08681-8125-448b-9477-63b95134b2d8"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "component": "scheduler",
+                        "release": "airflow",
+                        "tier": "airflow"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%"
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/airflow-config": "0bd9ea832e44a40479a8204d74ba357bba823b3bb921b91f2abca91f3cbb0478",
+                            "checksum/extra-configmaps": "2e44e493035e2f6a255d08f8104087ff10d30aef6f63176f1b18f75f73295598",
+                            "checksum/extra-secrets": "bb91ef06ddc31c0c5a29973832163d8b0b597812a793ef911d33b622bc9d1655",
+                            "checksum/metadata-secret": "dcbb26b06a9d686bf5fedceff6d4024447053fded58a37271cdfef14f8c8c800",
+                            "checksum/pgbouncer-config-secret": "da52bd1edfe820f0ddfacdebb20a4cc6407d296ee45bcb500a6407e2261a5ba2",
+                            "checksum/result-backend-secret": "81fd0bc85dc6b240d98a984a508d94f010a012348f2ce63d2a262b0cbc6e0356",
+                            "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "component": "scheduler",
+                            "release": "airflow",
+                            "tier": "airflow"
+                        }
+                    },
+                    "spec": {
+                        "affinity": {
+                            "podAntiAffinity": {
+                                "preferredDuringSchedulingIgnoredDuringExecution": [
+                                    {
+                                        "podAffinityTerm": {
+                                            "labelSelector": {
+                                                "matchLabels": {
+                                                    "component": "scheduler"
+                                                }
+                                            },
+                                            "topologyKey": "kubernetes.io/hostname"
+                                        },
+                                        "weight": 100
+                                    }
+                                ]
+                            }
+                        },
+                        "containers": [
+                            {
+                                "args": [
+                                    "bash",
+                                    "-c",
+                                    "exec airflow scheduler"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "sh",
+                                            "-c",
+                                            "CONNECTION_CHECK_MAX_COUNT=0 exec /entrypoint python -Wignore -c \"\nimport os\nos.environ['AIRFLOW__CORE__LOGGING_LEVEL'] = 'ERROR'\nos.environ['AIRFLOW__LOGGING__LOGGING_LEVEL'] = 'ERROR'\nfrom airflow.jobs.scheduler_job import SchedulerJob\nfrom airflow.utils.db import create_session\nfrom airflow.utils.net import get_hostname\nimport sys\nwith create_session() as session:\n    job = session.query(SchedulerJob).filter_by(hostname=get_hostname()).order_by(\n        SchedulerJob.latest_heartbeat.desc()).limit(1).first()\nsys.exit(0 if job.is_alive() else 1)\"\n"
+                                        ]
+                                    },
+                                    "failureThreshold": 5,
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 60,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 20
+                                },
+                                "name": "scheduler",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/pod_templates/pod_template_file.yaml",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "pod_template_file.yaml"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/logs",
+                                        "name": "logs"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/config/airflow_local_settings.py",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow_local_settings.py"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/dags",
+                                        "name": "dags",
+                                        "readOnly": true
+                                    }
+                                ]
+                            },
+                            {
+                                "env": [
+                                    {
+                                        "name": "GIT_SSH_KEY_FILE",
+                                        "value": "/etc/git-secret/ssh"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_SSH",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_KNOWN_HOSTS",
+                                        "value": "false"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REV",
+                                        "value": "HEAD"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_BRANCH",
+                                        "value": "main"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REPO",
+                                        "value": "ssh://git@github.com/rafzul/airflow_dags.git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEPTH",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ROOT",
+                                        "value": "/git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEST",
+                                        "value": "repo"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ADD_USER",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_WAIT",
+                                        "value": "60"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_MAX_SYNC_FAILURES",
+                                        "value": "2"
+                                    }
+                                ],
+                                "image": "k8s.gcr.io/git-sync/git-sync:v3.4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "git-sync",
+                                "resources": {},
+                                "securityContext": {
+                                    "runAsUser": 65533
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/git",
+                                        "name": "dags"
+                                    },
+                                    {
+                                        "mountPath": "/etc/git-secret/ssh",
+                                        "name": "git-sync-ssh-key",
+                                        "readOnly": true,
+                                        "subPath": "gitSshKey"
+                                    }
+                                ]
+                            },
+                            {
+                                "args": [
+                                    "bash",
+                                    "/clean-logs"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__LOG_RETENTION_DAYS",
+                                        "value": "15"
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "scheduler-log-groomer",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/logs",
+                                        "name": "logs"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "args": [
+                                    "airflow",
+                                    "db",
+                                    "check-migrations",
+                                    "--migration-wait-timeout=60"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-for-airflow-migrations",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    }
+                                ]
+                            },
+                            {
+                                "env": [
+                                    {
+                                        "name": "GIT_SSH_KEY_FILE",
+                                        "value": "/etc/git-secret/ssh"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_SSH",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_KNOWN_HOSTS",
+                                        "value": "false"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REV",
+                                        "value": "HEAD"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_BRANCH",
+                                        "value": "main"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_REPO",
+                                        "value": "ssh://git@github.com/rafzul/airflow_dags.git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEPTH",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ROOT",
+                                        "value": "/git"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_DEST",
+                                        "value": "repo"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ADD_USER",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_WAIT",
+                                        "value": "60"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_MAX_SYNC_FAILURES",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "GIT_SYNC_ONE_TIME",
+                                        "value": "true"
+                                    }
+                                ],
+                                "image": "k8s.gcr.io/git-sync/git-sync:v3.4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "git-sync-init",
+                                "resources": {},
+                                "securityContext": {
+                                    "runAsUser": 65533
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/git",
+                                        "name": "dags"
+                                    },
+                                    {
+                                        "mountPath": "/etc/git-secret/ssh",
+                                        "name": "git-sync-ssh-key",
+                                        "readOnly": true,
+                                        "subPath": "gitSshKey"
+                                    }
+                                ]
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 0,
+                            "runAsUser": 50000
+                        },
+                        "serviceAccount": "airflow-scheduler",
+                        "serviceAccountName": "airflow-scheduler",
+                        "terminationGracePeriodSeconds": 10,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "airflow-airflow-config"
+                                },
+                                "name": "config"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "dags"
+                            },
+                            {
+                                "name": "git-sync-ssh-key",
+                                "secret": {
+                                    "defaultMode": 288,
+                                    "secretName": "airflow-ssh-git-secret"
+                                }
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "logs"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-05-15T02:09:13Z",
+                        "lastUpdateTime": "2022-05-15T02:09:13Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2022-05-15T02:00:33Z",
+                        "lastUpdateTime": "2022-05-15T05:00:53Z",
+                        "message": "ReplicaSet \"airflow-scheduler-9789867b\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 7,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "7",
+                    "meta.helm.sh/release-name": "airflow",
+                    "meta.helm.sh/release-namespace": "airflow"
+                },
+                "creationTimestamp": "2022-05-15T02:00:33Z",
+                "generation": 7,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "chart": "airflow-1.5.0",
+                    "component": "webserver",
+                    "heritage": "Helm",
+                    "release": "airflow",
+                    "tier": "airflow"
+                },
+                "name": "airflow-webserver",
+                "namespace": "airflow",
+                "resourceVersion": "15408",
+                "uid": "24102e37-e5cf-4465-9f24-c304077e2f89"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "component": "webserver",
+                        "release": "airflow",
+                        "tier": "airflow"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": 1,
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/airflow-config": "0bd9ea832e44a40479a8204d74ba357bba823b3bb921b91f2abca91f3cbb0478",
+                            "checksum/extra-configmaps": "2e44e493035e2f6a255d08f8104087ff10d30aef6f63176f1b18f75f73295598",
+                            "checksum/extra-secrets": "bb91ef06ddc31c0c5a29973832163d8b0b597812a793ef911d33b622bc9d1655",
+                            "checksum/metadata-secret": "dcbb26b06a9d686bf5fedceff6d4024447053fded58a37271cdfef14f8c8c800",
+                            "checksum/pgbouncer-config-secret": "da52bd1edfe820f0ddfacdebb20a4cc6407d296ee45bcb500a6407e2261a5ba2",
+                            "checksum/webserver-config": "4a2281a4e3ed0cc5e89f07aba3c1bb314ea51c17cb5d2b41e9b045054a6b5c72",
+                            "checksum/webserver-secret-key": "569a58beea6967f32c44d633a1db741b4445d27779d821137cfbef0b8a05e290"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "component": "webserver",
+                            "release": "airflow",
+                            "tier": "airflow"
+                        }
+                    },
+                    "spec": {
+                        "affinity": {
+                            "podAntiAffinity": {
+                                "preferredDuringSchedulingIgnoredDuringExecution": [
+                                    {
+                                        "podAffinityTerm": {
+                                            "labelSelector": {
+                                                "matchLabels": {
+                                                    "component": "webserver"
+                                                }
+                                            },
+                                            "topologyKey": "kubernetes.io/hostname"
+                                        },
+                                        "weight": 100
+                                    }
+                                ]
+                            }
+                        },
+                        "containers": [
+                            {
+                                "args": [
+                                    "bash",
+                                    "-c",
+                                    "exec airflow webserver"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "failureThreshold": 20,
+                                    "httpGet": {
+                                        "path": "/health",
+                                        "port": 8080,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 15,
+                                    "periodSeconds": 5,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 30
+                                },
+                                "name": "webserver",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "name": "airflow-ui",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 20,
+                                    "httpGet": {
+                                        "path": "/health",
+                                        "port": 8080,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 15,
+                                    "periodSeconds": 5,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 30
+                                },
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/pod_templates/pod_template_file.yaml",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "pod_template_file.yaml"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    },
+                                    {
+                                        "mountPath": "/opt/airflow/config/airflow_local_settings.py",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow_local_settings.py"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "args": [
+                                    "airflow",
+                                    "db",
+                                    "check-migrations",
+                                    "--migration-wait-timeout=60"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AIRFLOW__CORE__FERNET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "fernet-key",
+                                                "name": "airflow-fernet-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CORE__SQL_ALCHEMY_CONN",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW_CONN_AIRFLOW_DB",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-metadata"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__WEBSERVER__SECRET_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "webserver-secret-key",
+                                                "name": "airflow-webserver-secret-key"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__CELERY_RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__RESULT_BACKEND",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-airflow-result-backend"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "AIRFLOW__CELERY__BROKER_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "connection",
+                                                "name": "airflow-broker-url"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "image": "apache/airflow:2.2.4",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-for-airflow-migrations",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/airflow/airflow.cfg",
+                                        "name": "config",
+                                        "readOnly": true,
+                                        "subPath": "airflow.cfg"
+                                    }
+                                ]
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 0,
+                            "runAsUser": 50000
+                        },
+                        "serviceAccount": "airflow-webserver",
+                        "serviceAccountName": "airflow-webserver",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "airflow-airflow-config"
+                                },
+                                "name": "config"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-05-15T02:09:52Z",
+                        "lastUpdateTime": "2022-05-15T02:09:52Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2022-05-15T02:00:33Z",
+                        "lastUpdateTime": "2022-05-15T05:01:37Z",
+                        "message": "ReplicaSet \"airflow-webserver-bcfb7b5d\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 7,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
+    }
+}

@@ -21,21 +21,12 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: airflow-logs-pv
+  namespace: airflow
 spec:
   accessModes:
     - ReadWriteMany
   capacity:
-    storage: 100Mi
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Recycle
   hostPath:
-    path: /data
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: airflow-logs-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 100Mi
+    path: "/opt/airflow/logs"

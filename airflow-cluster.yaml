@@ -5,13 +5,13 @@ metadata:
 servers: 1
 agents: 3
 volumes:
-  - volume: $HOME/projects/nytaxi/data:/tmp/data
+  - volume: $HOME/projects/nytaxi/data:/var/lib/rancher/k3s/storage@all
     nodeFilters:
-      - server:0
-      - agent:*
+        - server:0
+        - agent:*
 options:
   k3s:
     nodeLabels:
-      - label: airflow 
+      - label: airflow-worker 
         nodeFilters:
           - agent:*

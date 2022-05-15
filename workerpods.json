@@ -1,0 +1,209 @@
+Name:           airflow-worker-0
+Namespace:      airflow
+Priority:       0
+Node:           k3d-airflow-cluster-agent-1/172.24.0.5
+Start Time:     Sun, 15 May 2022 09:17:59 +0700
+Labels:         component=worker
+                controller-revision-hash=airflow-worker-86ddc98854
+                release=airflow
+                statefulset.kubernetes.io/pod-name=airflow-worker-0
+                tier=airflow
+Annotations:    checksum/airflow-config: 0bd9ea832e44a40479a8204d74ba357bba823b3bb921b91f2abca91f3cbb0478
+                checksum/extra-configmaps: 2e44e493035e2f6a255d08f8104087ff10d30aef6f63176f1b18f75f73295598
+                checksum/extra-secrets: bb91ef06ddc31c0c5a29973832163d8b0b597812a793ef911d33b622bc9d1655
+                checksum/kerberos-keytab: 18b80c0921e5c0af1e63eca1c3ce3fbc388d006bd2db5a7ab512dc8a563b6443
+                checksum/metadata-secret: dcbb26b06a9d686bf5fedceff6d4024447053fded58a37271cdfef14f8c8c800
+                checksum/pgbouncer-config-secret: da52bd1edfe820f0ddfacdebb20a4cc6407d296ee45bcb500a6407e2261a5ba2
+                checksum/result-backend-secret: 81fd0bc85dc6b240d98a984a508d94f010a012348f2ce63d2a262b0cbc6e0356
+                checksum/webserver-secret-key: e27c90c91521d08263dcfc2af057c590da4b3b4c2b8a01691fbf1dc9dc58cd95
+                cluster-autoscaler.kubernetes.io/safe-to-evict: true
+Status:         Pending
+IP:             
+IPs:            <none>
+Controlled By:  StatefulSet/airflow-worker
+Init Containers:
+  wait-for-airflow-migrations:
+    Container ID:  
+    Image:         apache/airflow:2.2.4
+    Image ID:      
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      airflow
+      db
+      check-migrations
+      --migration-wait-timeout=60
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     100m
+      memory:  2Gi
+    Requests:
+      cpu:     100m
+      memory:  51Mi
+    Environment:
+      AIRFLOW__CORE__FERNET_KEY:               <set to the key 'fernet-key' in secret 'airflow-fernet-key'>                      Optional: false
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN:         <set to the key 'connection' in secret 'airflow-airflow-metadata'>                Optional: false
+      AIRFLOW_CONN_AIRFLOW_DB:                 <set to the key 'connection' in secret 'airflow-airflow-metadata'>                Optional: false
+      AIRFLOW__WEBSERVER__SECRET_KEY:          <set to the key 'webserver-secret-key' in secret 'airflow-webserver-secret-key'>  Optional: false
+      AIRFLOW__CELERY__CELERY_RESULT_BACKEND:  <set to the key 'connection' in secret 'airflow-airflow-result-backend'>          Optional: false
+      AIRFLOW__CELERY__RESULT_BACKEND:         <set to the key 'connection' in secret 'airflow-airflow-result-backend'>          Optional: false
+      AIRFLOW__CELERY__BROKER_URL:             <set to the key 'connection' in secret 'airflow-broker-url'>                      Optional: false
+    Mounts:
+      /opt/airflow/airflow.cfg from config (ro,path="airflow.cfg")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jhkzn (ro)
+  git-sync-init:
+    Container ID:   
+    Image:          k8s.gcr.io/git-sync/git-sync:v3.4.0
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      GIT_SSH_KEY_FILE:            /etc/git-secret/ssh
+      GIT_SYNC_SSH:                true
+      GIT_KNOWN_HOSTS:             false
+      GIT_SYNC_REV:                HEAD
+      GIT_SYNC_BRANCH:             main
+      GIT_SYNC_REPO:               ssh://git@github.com/rafzul/airflow_dags.git
+      GIT_SYNC_DEPTH:              1
+      GIT_SYNC_ROOT:               /git
+      GIT_SYNC_DEST:               repo
+      GIT_SYNC_ADD_USER:           true
+      GIT_SYNC_WAIT:               60
+      GIT_SYNC_MAX_SYNC_FAILURES:  2
+      GIT_SYNC_ONE_TIME:           true
+    Mounts:
+      /etc/git-secret/ssh from git-sync-ssh-key (ro,path="gitSshKey")
+      /git from dags (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jhkzn (ro)
+Containers:
+  worker:
+    Container ID:  
+    Image:         apache/airflow:2.2.4
+    Image ID:      
+    Port:          8793/TCP
+    Host Port:     0/TCP
+    Args:
+      bash
+      -c
+      exec \
+      airflow celery worker
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     100m
+      memory:  2Gi
+    Requests:
+      cpu:     100m
+      memory:  51Mi
+    Environment:
+      DUMB_INIT_SETSID:                        0
+      AIRFLOW__CORE__FERNET_KEY:               <set to the key 'fernet-key' in secret 'airflow-fernet-key'>                      Optional: false
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN:         <set to the key 'connection' in secret 'airflow-airflow-metadata'>                Optional: false
+      AIRFLOW_CONN_AIRFLOW_DB:                 <set to the key 'connection' in secret 'airflow-airflow-metadata'>                Optional: false
+      AIRFLOW__WEBSERVER__SECRET_KEY:          <set to the key 'webserver-secret-key' in secret 'airflow-webserver-secret-key'>  Optional: false
+      AIRFLOW__CELERY__CELERY_RESULT_BACKEND:  <set to the key 'connection' in secret 'airflow-airflow-result-backend'>          Optional: false
+      AIRFLOW__CELERY__RESULT_BACKEND:         <set to the key 'connection' in secret 'airflow-airflow-result-backend'>          Optional: false
+      AIRFLOW__CELERY__BROKER_URL:             <set to the key 'connection' in secret 'airflow-broker-url'>                      Optional: false
+    Mounts:
+      /opt/airflow/airflow.cfg from config (ro,path="airflow.cfg")
+      /opt/airflow/config/airflow_local_settings.py from config (ro,path="airflow_local_settings.py")
+      /opt/airflow/dags from dags (ro)
+      /opt/airflow/logs from logs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jhkzn (ro)
+  git-sync:
+    Container ID:   
+    Image:          k8s.gcr.io/git-sync/git-sync:v3.4.0
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      GIT_SSH_KEY_FILE:            /etc/git-secret/ssh
+      GIT_SYNC_SSH:                true
+      GIT_KNOWN_HOSTS:             false
+      GIT_SYNC_REV:                HEAD
+      GIT_SYNC_BRANCH:             main
+      GIT_SYNC_REPO:               ssh://git@github.com/rafzul/airflow_dags.git
+      GIT_SYNC_DEPTH:              1
+      GIT_SYNC_ROOT:               /git
+      GIT_SYNC_DEST:               repo
+      GIT_SYNC_ADD_USER:           true
+      GIT_SYNC_WAIT:               60
+      GIT_SYNC_MAX_SYNC_FAILURES:  2
+    Mounts:
+      /etc/git-secret/ssh from git-sync-ssh-key (ro,path="gitSshKey")
+      /git from dags (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jhkzn (ro)
+  worker-log-groomer:
+    Container ID:  
+    Image:         apache/airflow:2.2.4
+    Image ID:      
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      bash
+      /clean-logs
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      AIRFLOW__LOG_RETENTION_DAYS:  15
+    Mounts:
+      /opt/airflow/logs from logs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jhkzn (ro)
+Conditions:
+  Type              Status
+  Initialized       False 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  logs:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  logs-airflow-worker-0
+    ReadOnly:   false
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      airflow-airflow-config
+    Optional:  false
+  dags:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  git-sync-ssh-key:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  airflow-git-ssh-secret3
+    Optional:    false
+  kube-api-access-jhkzn:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age                     From     Message
+  ----     ------       ----                    ----     -------
+  Warning  FailedMount  34m (x14 over 177m)     kubelet  Unable to attach or mount volumes: unmounted volumes=[git-sync-ssh-key], unattached volumes=[logs config kube-api-access-jhkzn dags git-sync-ssh-key]: timed out waiting for the condition
+  Warning  FailedMount  14m (x99 over 3h20m)    kubelet  MountVolume.SetUp failed for volume "git-sync-ssh-key" : secret "airflow-git-ssh-secret3" not found
+  Warning  FailedMount  9m47s (x28 over 3h18m)  kubelet  Unable to attach or mount volumes: unmounted volumes=[git-sync-ssh-key], unattached volumes=[config kube-api-access-jhkzn dags git-sync-ssh-key logs]: timed out waiting for the condition
+  Warning  FailedMount  5m46s                   kubelet  Unable to attach or mount volumes: unmounted volumes=[git-sync-ssh-key], unattached volumes=[dags git-sync-ssh-key logs config kube-api-access-jhkzn]: timed out waiting for the condition
+  Warning  FailedMount  3m28s                   kubelet  Unable to attach or mount volumes: unmounted volumes=[git-sync-ssh-key], unattached volumes=[config kube-api-access-jhkzn dags git-sync-ssh-key logs]: timed out waiting for the condition
+  Warning  FailedMount  95s (x11 over 7m47s)    kubelet  MountVolume.SetUp failed for volume "git-sync-ssh-key" : secret "airflow-git-ssh-secret3" not found
+  Warning  FailedMount  74s                     kubelet  Unable to attach or mount volumes: unmounted volumes=[git-sync-ssh-key], unattached volumes=[logs config kube-api-access-jhkzn dags git-sync-ssh-key]: timed out waiting for the condition
