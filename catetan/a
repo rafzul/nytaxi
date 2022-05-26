@@ -9,14 +9,11 @@ airflow:
   ## configs for the airflow container image
   ##
   image:
-    repository: apache/airflow
-    tag: 2.2.5-python3.8
+    repository: airflow-custom
+    tag: 1.0.0
     pullPolicy: IfNotPresent
-    pullSecret: ""
-    uid: 50000
-    gid: 0
 
-  ## the airflow executor type to use
+  ## the airflow executor type to use 
   ## - allowed values: "CeleryExecutor", "KubernetesExecutor", "CeleryKubernetesExecutor"
   ## - customize the "KubernetesExecutor" pod-template with `airflow.kubernetesPodTemplate.*`
   ##

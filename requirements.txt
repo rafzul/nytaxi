@@ -1,4 +1,5 @@
+pandas
+pyspark
+pyarrow
 apache-airflow-providers-apache-spark
 apache-airflow-providers-google
-pyarrow
-pyspark

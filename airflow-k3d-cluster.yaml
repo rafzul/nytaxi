@@ -5,7 +5,7 @@ metadata:
 servers: 1
 agents: 3
 volumes:
-  - volume: $HOME/projects/nytaxi/data:/var/lib/rancher/k3s/storage@all
+  - volume: /media/rafzul/terminal_dogma/nytaxidata:/storage
     nodeFilters:
         - server:0
         - agent:*
