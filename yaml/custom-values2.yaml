@@ -170,6 +170,16 @@ workers:
   logCleanup:
     enabled: true
     retentionMinutes: 21600
+  
+  extraVolumeMounts:
+    - name: worker-tmp
+      mountPath: /tmp
+      readOnly: false 
+
+  extraVolumes:
+    - name: worker-tmp
+      persistentVolumeClaim:
+        claimName: worker-tmp
 
 ###################################
 ## COMPONENT | Triggerer
@@ -230,13 +240,17 @@ dags:
   ## [FAQ] https://github.com/airflow-helm/charts/blob/main/charts/airflow/docs/faq/dags/load-dag-definitions.md
   persistence:
     enabled: false
+    ## NOTE: set `storageClass` to "" for the cluster-default
+    storageClass: "default" 
+    
+    ## NOTE: some types of StorageClass will ignore this request (for example, EFS)
+    size: 1Gi
+    
+    ## NOTE: as multiple Pods read the DAGs concurrently this MUST be ReadOnlyMany or ReadWriteMany
+    accessMode: ReadWriteMany
 
   ## configs for the git-sync sidecar
   ## [FAQ] https://github.com/airflow-helm/charts/blob/main/charts/airflow/docs/faq/dags/load-dag-definitions.md
-  dags:
-  ## NOTE: this is the default value
-  path: /opt/airflow/dags
-  
   gitSync:
     enabled: true
     
@@ -323,7 +337,7 @@ postgresql:
 
   ## configs for the PVC of postgresql
   persistence:
-    enabled: true
+    enabled: false
     storageClass: ""
     size: 8Gi
 
