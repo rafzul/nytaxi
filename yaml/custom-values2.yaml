@@ -229,6 +229,16 @@ logs:
   persistence:
     enabled: false
 
+    ## NOTE: set `storageClass` to "" for the cluster-default
+    storageClass: "local-path"
+
+
+    ## NOTE: some types of StorageClass will ignore this request (for example, EFS)
+    size: 2Gi
+    
+    ## WARNING: as multiple pods will write logs, this MUST be ReadWriteMany
+    accessMode: ReadWriteMany
+
 ###################################
 ## CONFIG | Airflow DAGs
 ###################################
